@@ -4,5 +4,7 @@ import ua.com.kture.model.User;
 
 public interface UserService {
 
-    User getUser(String username);
+    User getUser(String username) throws Exception;
+
+    User addUser(String username, String password) throws Exception;
 }

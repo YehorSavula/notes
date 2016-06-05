@@ -3,7 +3,6 @@ package ua.com.kture.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.com.kture.model.Note;
@@ -29,7 +28,7 @@ public class BaseController {
         ModelAndView modelAndView = new ModelAndView();
         List<Note> notes = null;
         try {
-            notes = notesService.getUserNodes(userService.getUser(principal.getName()).getUserId());
+            notes = notesService.getUserNotes(userService.getUser(principal.getName()).getUserId());
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Can't get notes");
         }

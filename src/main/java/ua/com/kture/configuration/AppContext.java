@@ -39,11 +39,6 @@ import java.util.Properties;
 public class AppContext extends WebMvcConfigurerAdapter {
 
     @Bean
-    public MultipartResolver multipartResolver() {
-        return new CommonsMultipartResolver();
-    }
-
-    @Bean
     public ViewResolver jspViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/");

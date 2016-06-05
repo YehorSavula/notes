@@ -17,7 +17,7 @@
 
 <br><br><br>
 <h1>My Notes:</h1>
-<table id="list_car_table" width="600px">
+<table id="list_notes_table" width="600px">
     <c:forEach var="note" items="${notes}">
         <tr data-note-id="${note.noteId}">
             <td>${note.text}</td>

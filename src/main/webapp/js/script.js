@@ -5,7 +5,7 @@ function addNote(button) {
       url: 'notes/add',
       data: {'text': text},
       success: function(data) {
-        $('#list_car_table').prepend('<tr data-note-id="' + data.noteId + '"><td>'
+        $('#list_notes_table').prepend('<tr data-note-id="' + data.noteId + '"><td>'
                                     + data.text + '</td><td><button onclick="removeNote(this);">Remove</button></td></tr>');
         $(button).siblings('textarea').val('');
       }

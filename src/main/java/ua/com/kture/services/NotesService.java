@@ -8,6 +8,6 @@ import java.util.List;
 public interface NotesService {
 
     Note createNote(String text, User user) throws Exception;
-    List<Note> getUserNodes(int userId) throws Exception;
+    List<Note> getUserNotes(int userId) throws Exception;
     boolean deleteNote(int noteId) throws Exception;
 }

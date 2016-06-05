@@ -26,7 +26,7 @@ public class NotesServiceImpl implements NotesService {
     }
 
     @Override
-    public List<Note> getUserNodes(int userId) throws Exception {
+    public List<Note> getUserNotes(int userId) throws Exception {
         return notesDAO.getUserNodes(userId);
     }
 

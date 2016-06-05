@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Controller
-@RequestMapping(path = "/notes")
+@RequestMapping(value = "/notes")
 public class NotesController {
 
     @Autowired
@@ -38,21 +38,6 @@ public class NotesController {
             note = notesService.createNote(text, currentUser);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Can't create note");
-        }
-        return note;
-    }
-
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public
-    @ResponseBody
-    Note updateNote(@RequestParam(name = "text") String text,
-                 @RequestParam(name = "noteId") int noteId, HttpServletResponse response) throws IOException {
-        Note note = null;
-        try {
-            note = notesService.updateNote(noteId, text);
-        } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Can't update note");
         }
         return note;
     }

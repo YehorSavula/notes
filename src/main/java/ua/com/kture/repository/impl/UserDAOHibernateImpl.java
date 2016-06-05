@@ -2,10 +2,13 @@ package ua.com.kture.repository.impl;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ua.com.kture.model.User;
 import ua.com.kture.repository.BaseDAO;
 import ua.com.kture.repository.UserDAO;
 
+@Repository
 public class UserDAOHibernateImpl extends BaseDAO implements UserDAO {
 
     @Override

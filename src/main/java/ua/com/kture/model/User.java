@@ -34,7 +34,7 @@ public class User {
 
     @NotNull
     @Size(min = 3, max = 50)
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     public String getUsername() {
         return username;
     }

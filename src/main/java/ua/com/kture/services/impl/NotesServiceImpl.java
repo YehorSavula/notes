@@ -26,13 +26,6 @@ public class NotesServiceImpl implements NotesService {
     }
 
     @Override
-    public Note updateNote(int noteId, String text) throws Exception {
-        Note note = notesDAO.getNote(noteId);
-        note.setText(text);
-        return notesDAO.updateNote(note);
-    }
-
-    @Override
     public List<Note> getUserNodes(int userId) throws Exception {
         return notesDAO.getUserNodes(userId);
     }

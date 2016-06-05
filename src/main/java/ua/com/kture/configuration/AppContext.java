@@ -10,12 +10,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import ua.com.kture.repository.NotesDAO;
@@ -25,10 +25,10 @@ import ua.com.kture.repository.impl.UserDAOHibernateImpl;
 import ua.com.kture.services.NotesService;
 import ua.com.kture.services.UserService;
 import ua.com.kture.services.impl.NotesServiceImpl;
-import ua.com.kture.services.impl.UserDetailsServiceImpl;
 import ua.com.kture.services.impl.UserServiceImpl;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.Properties;
 
 @Configuration
@@ -46,7 +46,7 @@ public class AppContext extends WebMvcConfigurerAdapter {
     @Bean
     public ViewResolver jspViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/");
+        resolver.setPrefix("/");
         resolver.setSuffix(".jsp");
         return resolver;
     }
@@ -75,12 +75,13 @@ public class AppContext extends WebMvcConfigurerAdapter {
     private Environment environment;
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
+    public SessionFactory sessionFactory() throws IOException {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan(new String[] { "ua.com.kture.model" });
         sessionFactory.setHibernateProperties(hibernateProperties());
-        return sessionFactory;
+        sessionFactory.afterPropertiesSet();
+        return sessionFactory.getObject();
     }
 
     @Bean
@@ -102,10 +103,14 @@ public class AppContext extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public HibernateTransactionManager transactionManager(SessionFactory s) {
+    public HibernateTransactionManager transactionManager() throws IOException {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(s);
+        txManager.setSessionFactory(sessionFactory());
         return txManager;
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/js/**").addResourceLocations("/js/");
+    }
 }

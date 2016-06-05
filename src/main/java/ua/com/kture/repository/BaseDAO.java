@@ -3,6 +3,7 @@ package ua.com.kture.repository;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseDAO {
@@ -14,15 +15,22 @@ public class BaseDAO {
     }
 
     public Session getSession() {
-        return sessionFactory.getCurrentSession();
+        try {
+            return sessionFactory.getCurrentSession();
+        } catch(HibernateException e) {
+            return sessionFactory.openSession();
+        }
     }
 
     protected void begin() {
-        getSession().beginTransaction();
+        getSession().getTransaction().begin();
     }
 
     protected void commit() {
-        getSession().getTransaction().commit();
+        Transaction tx = getSession().getTransaction();
+        if(tx.isActive()) {
+            tx.commit();
+        }
     }
 
     protected void rollback() throws Exception {
@@ -30,7 +38,7 @@ public class BaseDAO {
             getSession().getTransaction().rollback();
             getSession().close();
         } catch (HibernateException e) {
-            throw new Exception("Repository fail");
+            throw new Exception("Repository fail", e);
         }
     }
 

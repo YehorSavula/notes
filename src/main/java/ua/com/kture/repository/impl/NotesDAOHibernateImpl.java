@@ -2,12 +2,15 @@ package ua.com.kture.repository.impl;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ua.com.kture.model.Note;
 import ua.com.kture.repository.BaseDAO;
 import ua.com.kture.repository.NotesDAO;
 
 import java.util.List;
 
+@Repository
 public class NotesDAOHibernateImpl extends BaseDAO implements NotesDAO {
 
     @Override
@@ -19,18 +22,6 @@ public class NotesDAOHibernateImpl extends BaseDAO implements NotesDAO {
             return note;
         } catch (HibernateException e) {
             throw new Exception("Can't save note", e);
-        }
-    }
-
-    @Override
-    public Note updateNote(Note note) throws Exception {
-        try {
-            begin();
-            getSession().update(note);
-            commit();
-            return note;
-        } catch (HibernateException e) {
-            throw new Exception("Can't update note", e);
         }
     }
 
@@ -53,7 +44,7 @@ public class NotesDAOHibernateImpl extends BaseDAO implements NotesDAO {
     public List<Note> getUserNodes(int userId) throws Exception {
         try {
             begin();
-            Query q = getSession().createQuery("from Note where User.userId = :userId");
+            Query q = getSession().createQuery("from Note as note where note.user.userId = :userId ORDER BY note.createdDate DESC");
             q.setInteger("userId", userId);
             List<Note> notes = q.list();
             commit();
@@ -68,7 +59,7 @@ public class NotesDAOHibernateImpl extends BaseDAO implements NotesDAO {
     public boolean deleteNote(int noteId) throws Exception {
         try {
             begin();
-            Query query = getSession().createQuery("delete Note where noteId = :noteId");
+            Query query = getSession().createQuery("delete Note as note where note.noteId = :noteId");
             query.setParameter("noteId", noteId);
             int result = query.executeUpdate();
             commit();

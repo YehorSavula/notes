@@ -21,7 +21,6 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response, Authentication authentication) throws IOException {
         handle(request, response, authentication);
-        clearAuthenticationAttributes(request);
     }
 
     protected void handle(HttpServletRequest request,
@@ -45,14 +44,6 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         } else {
             throw new IllegalStateException();
         }
-    }
-
-    protected void clearAuthenticationAttributes(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return;
-        }
-        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }
 
     public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
